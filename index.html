@@ -261,3 +261,250 @@
   MTITAA ICON SCORE © 2026<br>
   CREATED BY ALLEN MSANJILA
         </footer>
+<script>
+let currentLanguage = "sw";
+
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.add("hidden");
+  });
+
+  const selectedPage = document.getElementById(pageId);
+  if (selectedPage) {
+    selectedPage.classList.remove("hidden");
+  }
+
+  if (pageId === "bets") {
+    displayBetslips();
+  }
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("light");
+
+  const theme = document.body.classList.contains("light")
+    ? "light"
+    : "dark";
+
+  localStorage.setItem("mtitaa_theme", theme);
+}
+
+function toggleLanguage() {
+  currentLanguage = currentLanguage === "sw" ? "en" : "sw";
+
+  document.getElementById("welcome").textContent =
+    currentLanguage === "sw"
+      ? "Karibu MTITAA ICON SCORE"
+      : "Welcome to MTITAA ICON SCORE";
+
+  document.querySelectorAll("nav button").forEach((button, index) => {
+    const swahili = [
+      "Mwanzo",
+      "Ligi",
+      "Betslip",
+      "Tipsters",
+      "Akaunti"
+    ];
+
+    const english = [
+      "Home",
+      "Leagues",
+      "Betslips",
+      "Tipsters",
+      "Account"
+    ];
+
+    button.textContent =
+      currentLanguage === "sw" ? swahili[index] : english[index];
+  });
+}
+
+function searchLeagues() {
+  const query = document
+    .getElementById("leagueSearch")
+    .value.toLowerCase();
+
+  document.querySelectorAll("#leagueList p").forEach(item => {
+    item.style.display = item.textContent
+      .toLowerCase()
+      .includes(query)
+      ? ""
+      : "none";
+  });
+}
+
+function saveBetslip() {
+  const username = document.getElementById("username").value.trim();
+  const company = document.getElementById("company").value;
+  const picks = document.getElementById("picks").value.trim();
+  const odds = document.getElementById("odds").value;
+  const imageInput = document.getElementById("slipImage");
+
+  if (!username || !picks || !odds) {
+    alert("Tafadhali jaza jina, maelezo ya betslip na odds.");
+    return;
+  }
+
+  if (Number(odds) <= 0) {
+    alert("Odds lazima ziwe kubwa kuliko sifuri.");
+    return;
+  }
+
+  const saveSlip = imageData => {
+    const slips = JSON.parse(
+      localStorage.getItem("mtitaa_betslips") || "[]"
+    );
+
+    slips.unshift({
+      id: Date.now(),
+      username,
+      company,
+      picks,
+      odds: Number(odds),
+      image: imageData || "",
+      status: "Pending",
+      date: new Date().toLocaleDateString()
+    });
+
+    localStorage.setItem("mtitaa_betslips", JSON.stringify(slips));
+
+    document.getElementById("picks").value = "";
+    document.getElementById("odds").value = "";
+    document.getElementById("slipImage").value = "";
+
+    displayBetslips();
+
+    alert("Betslip imehifadhiwa kwenye kifaa hiki!");
+  };
+
+  if (imageInput.files && imageInput.files[0]) {
+    const file = imageInput.files[0];
+
+    if (!file.type.startsWith("image/")) {
+      alert("Tafadhali chagua picha.");
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Picha ni kubwa sana. Chagua picha isiyozidi 2 MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = event => saveSlip(event.target.result);
+    reader.onerror = () => alert("Imeshindikana kusoma picha.");
+
+    reader.readAsDataURL(file);
+  } else {
+    saveSlip("");
+  }
+}
+
+function displayBetslips() {
+  const container = document.getElementById("betsList");
+
+  if (!container) return;
+
+  const slips = JSON.parse(
+    localStorage.getItem("mtitaa_betslips") || "[]"
+  );
+
+  container.innerHTML = "";
+
+  if (slips.length === 0) {
+    container.textContent = "Bado hakuna betslip zilizohifadhiwa.";
+    return;
+  }
+
+  slips.forEach(slip => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const title = document.createElement("h3");
+    title.textContent = slip.username + " — " + slip.company;
+
+    const details = document.createElement("p");
+    details.textContent =
+      slip.picks + " | Odds: " + slip.odds;
+
+    const status = document.createElement("p");
+    status.textContent =
+      "Hali: " + slip.status + " | Tarehe: " + slip.date;
+
+    card.append(title, details, status);
+
+    if (slip.image) {
+      const img = document.createElement("img");
+      img.src = slip.image;
+      img.alt = "Picha ya betslip";
+      img.style.width = "100%";
+      img.style.maxWidth = "300px";
+      img.style.borderRadius = "8px";
+      card.appendChild(img);
+    }
+
+    const shareButton = document.createElement("button");
+    shareButton.textContent = "Shiriki";
+
+    shareButton.onclick = async () => {
+      const shareText =
+        "MTITAA ICON SCORE\n" +
+        "Tipster: " + slip.username + "\n" +
+        "Kampuni: " + slip.company + "\n" +
+        "Chaguo: " + slip.picks + "\n" +
+        "Odds: " + slip.odds + "\n" +
+        "Hali: " + slip.status;
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ text: shareText });
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            alert(shareText);
+          }
+        }
+      } else {
+        try {
+          await navigator.clipboard.writeText(shareText);
+          alert("Maelezo yamenakiliwa. Unaweza kuyatuma kwa mtu mwingine.");
+        } catch (error) {
+          alert(shareText);
+        }
+      }
+    };
+
+    card.appendChild(shareButton);
+    container.appendChild(card);
+  });
+}
+
+function saveProfile() {
+  const name = document.getElementById("accountName").value.trim();
+  const email = document.getElementById("accountEmail").value.trim();
+
+  if (!name || !email) {
+    alert("Tafadhali jaza jina na email.");
+    return;
+  }
+
+  localStorage.setItem(
+    "mtitaa_profile",
+    JSON.stringify({ name, email })
+  );
+
+  document.getElementById("profileMessage").textContent =
+    "Taarifa zimehifadhiwa kwenye kifaa hiki. Hii si akaunti salama ya mtandaoni.";
+}
+
+(function initialise() {
+  if (localStorage.getItem("mtitaa_theme") === "light") {
+    document.body.classList.add("light");
+  }
+
+  displayBetslips();
+})();
+</script>
+
+</body>
+</html>
