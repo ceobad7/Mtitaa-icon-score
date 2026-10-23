@@ -1,77 +1,263 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MTITAA ICON SCORE</title>
-<style>
-body{margin:0;background:#0b1220;color:white;font-family:Arial,sans-serif}
-header{background:#142238;padding:20px;text-align:center;border-bottom:3px solid #20d47b}
-h1{color:#20d47b;font-size:24px}
-main{padding:16px;max-width:700px;margin:auto}
-.card{background:#17263b;padding:16px;border-radius:12px;margin:15px 0}
-button{background:#20d47b;color:#052617;padding:12px;border:0;border-radius:8px;font-weight:bold}
-input{padding:10px;max-width:95%;margin:8px 0}
-a{color:#20d47b}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTITAA ICON SCORE</title>
+
+  <style>
+    :root {
+      --bg: #08111f;
+      --card: #132238;
+      --text: #ffffff;
+      --accent: #00e676;
+      --muted: #a9b7ca;
+    }
+
+    body.light {
+      --bg: #f2f5f9;
+      --card: #ffffff;
+      --text: #172033;
+      --accent: #008f50;
+      --muted: #596579;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      transition: 0.3s;
+    }
+
+    header {
+      background: var(--card);
+      padding: 20px 12px;
+      text-align: center;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    header h1 {
+      margin: 0;
+      color: var(--accent);
+      font-size: 25px;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      overflow-x: auto;
+      background: var(--card);
+    }
+
+    button, .tab {
+      background: var(--accent);
+      color: #06130b;
+      border: none;
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    main {
+      max-width: 850px;
+      margin: auto;
+      padding: 15px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 15px;
+      border: 1px solid #52607844;
+    }
+
+    h2 {
+      color: var(--accent);
+      font-size: 20px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 7px 0 12px;
+      border-radius: 7px;
+      border: 1px solid #718096;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .match {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #52607844;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: var(--muted);
+    }
+  </style>
 </head>
+
 <body>
+
 <header>
-<h1>⚽ MTITAA ICON SCORE</h1>
-<p>Football Scores & Betslip Community</p>
+  <h1>⚽ MTITAA ICON SCORE</h1>
+  <p>CREATED BY ALLEN MSANJILA</p>
+  <button onclick="toggleTheme()">🌙 / ☀️ Theme</button>
+  <button onclick="toggleLanguage()">SW / EN</button>
 </header>
+
+<nav>
+  <button onclick="showPage('home')">Mwanzo</button>
+  <button onclick="showPage('leagues')">Ligi</button>
+  <button onclick="showPage('bets')">Betslip</button>
+  <button onclick="showPage('tipsters')">Tipsters</button>
+  <button onclick="showPage('account')">Akaunti</button>
+</nav>
+
 <main>
-<div class="card">
-<h2>Karibu!</h2>
-<p>Angalia mechi, shiriki betslip zako na ungana na mashabiki wengine.</p>
-<button onclick="show('home')">Mwanzo</button>
-<button onclick="show('upload')">Pakia Betslip</button>
-<button onclick="show('account')">Akaunti</button>
-</div>
-<section id="home" class="card">
-<h2>⚽ Mechi na Matokeo</h2>
-<p>Matokeo halisi yataunganishwa baada ya kuunganisha chanzo cha data za mpira.</p>
-<p>Premier League • La Liga • Serie A • NBC Premier League</p>
-</section>
-<section id="upload" class="card" hidden>
-<h2>📸 Shiriki Betslip</h2>
-<input id="photo" type="file" accept="image/*">
-<p><input id="caption" placeholder="Maelezo ya betslip"></p>
-<button onclick="share()">Onyesha Betslip</button>
-<div id="preview"></div>
-</section>
-<section id="account" class="card" hidden>
-<h2>👤 Akaunti</h2>
-<p>Usajili halisi utaongezwa baada ya kuunganisha mfumo salama wa akaunti.</p>
-<input placeholder="Barua pepe au namba ya simu">
-</section>
-<section class="card">
-<h2>👥 Betslip za Jamii</h2>
-<div id="community">Betslip ulizochagua kushiriki zitaonekana hapa kwenye kifaa hiki.</div>
-</section>
-<p style="color:#aab8ca;font-size:12px">Prototype ya mwanzo. Matokeo ya moja kwa moja na akaunti halisi bado havijaunganishwa.</p>
+
+  <section id="home" class="page">
+    <div class="card">
+      <h2 id="welcome">Karibu MTITAA ICON SCORE</h2>
+      <p>Habari za mpira, ligi na jumuiya ya betslip katika sehemu moja.</p>
+      <p class="muted">
+        Live scores hazijaunganishwa bado. Ili kupata matokeo ya moja kwa moja,
+        tutahitaji kuunganisha huduma ya takwimu za mpira.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>📊 Live Scores</h2>
+      <p class="muted">Mechi za moja kwa moja zitaonekana hapa baada ya kuunganisha API.</p>
+      <div id="scores">
+        <div class="match">
+          <span>⚽ Live Football</span>
+          <span>API haijaunganishwa</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="leagues" class="page hidden">
+    <div class="card">
+      <h2>Ligi za Mpira</h2>
+      <input id="leagueSearch" placeholder="Tafuta ligi..." oninput="searchLeagues()">
+
+      <div id="leagueList">
+        <p>🏆 English Premier League</p>
+        <p>🏆 La Liga — Spain</p>
+        <p>🏆 Serie A — Italy</p>
+        <p>🏆 Bundesliga — Germany</p>
+        <p>🏆 Ligue 1 — France</p>
+        <p>🏆 UEFA Champions League</p>
+        <p>🏆 CAF Champions League</p>
+        <p>🏆 NBC Premier League — Tanzania</p>
+        <p>🏆 Kenyan Premier League</p>
+        <p>🏆 Saudi Pro League</p>
+      </div>
+
+      <p class="muted">Hii ni orodha ya mfano, si msimamo wa moja kwa moja.</p>
+    </div>
+  </section>
+
+  <section id="bets" class="page hidden">
+    <div class="card">
+      <h2>🎫 Shiriki Betslip</h2>
+
+      <label>Jina lako / Username</label>
+      <input id="username" placeholder="Andika jina lako">
+
+      <label>Kampuni ya betting</label>
+      <select id="company">
+        <option>SportPesa</option>
+        <option>Betika</option>
+        <option>1xBet</option>
+        <option>Betway</option>
+        <option> nyingine</option>
+      </select>
+
+      <label>Maelezo ya betslip na mechi</label>
+      <textarea id="picks" rows="4" placeholder="Andika mechi na chaguo zako"></textarea>
+
+      <label>Odds</label>
+      <input id="odds" type="number" step="0.01" placeholder="Mfano: 3.50">
+
+      <label>Picha ya betslip (si lazima)</label>
+      <input id="slipImage" type="file" accept="image/*">
+
+      <button onclick="saveBetslip()">Hifadhi Betslip</button>
+    </div>
+
+    <div class="card">
+      <h2>Betslip Zilizohifadhiwa</h2>
+      <div id="betsList"></div>
+      <p class="muted">
+        Betslip hizi zinahifadhiwa kwenye kifaa hiki pekee.
+        Kushiriki na watumiaji wengine kutahitaji database.
+      </p>
+    </div>
+  </section>
+
+  <section id="tipsters" class="page hidden">
+    <div class="card">
+      <h2>🏆 Top Tipsters</h2>
+      <p>Sehemu ya kuonyesha tipsters bora na rekodi zao.</p>
+      <p class="muted">
+        Nafasi na rekodi halisi zitaonekana baada ya kuunganisha database.
+      </p>
+    </div>
+  </section>
+
+  <section id="account" class="page hidden">
+    <div class="card">
+      <h2>👤 Akaunti</h2>
+      <label>Jina</label>
+      <input id="accountName" placeholder="Jina lako">
+
+      <label>Email</label>
+      <input id="accountEmail" type="email" placeholder="Email yako">
+
+      <button onclick="saveProfile()">Hifadhi taarifa kwenye kifaa</button>
+
+      <p id="profileMessage" class="muted"></p>
+      <p class="muted">
+        Hii si login salama ya mtandaoni bado. Tutahitaji huduma ya authentication
+        na database ili watumiaji waweze kuingia kwenye akaunti zao.
+      </p>
+    </div>
+  </section>
+
 </main>
-<script>
-function show(id){
-document.querySelectorAll('main section').forEach(s=>s.hidden=true);
-document.getElementById(id).hidden=false;
-}
-function share(){
-const f=document.getElementById('photo').files[0];
-if(!f){alert('Tafadhali chagua picha ya betslip kwanza.');return;}
-const r=new FileReader();
-r.onload=function(){
-const box=document.createElement('div');
-box.className='card';
-const img=document.createElement('img');
-img.src=r.result;img.style.width='100%';img.style.borderRadius='8px';
-const p=document.createElement('p');
-p.textContent=document.getElementById('caption').value||'Betslip iliyoshirikishwa';
-box.appendChild(p);box.appendChild(img);
-document.getElementById('community').prepend(box);
-};
-r.readAsDataURL(f);
-}
-</script>
-</body>
-</html>
+
+<footer>
+  MTITAA ICON SCORE © 2026<br>
+  CREATED BY ALLEN MSANJILA
+        </footer>
