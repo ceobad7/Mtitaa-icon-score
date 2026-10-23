@@ -1,0 +1,12 @@
+{
+  "name": "MTITAA ICON SCORE",
+  "short_name": "MTITAA SCORE",
+  "description": "Football scores, fixtures and leagues by Allen Msanjila",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#08111f",
+  "theme_color": "#00e676",
+  "orientation": "portrait",
+  "lang": "sw"
+}
