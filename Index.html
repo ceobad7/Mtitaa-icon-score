@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTITAA ICON SCORE</title>
+<style>
+body{margin:0;background:#0b1220;color:white;font-family:Arial,sans-serif}
+header{background:#142238;padding:20px;text-align:center;border-bottom:3px solid #20d47b}
+h1{color:#20d47b;font-size:24px}
+main{padding:16px;max-width:700px;margin:auto}
+.card{background:#17263b;padding:16px;border-radius:12px;margin:15px 0}
+button{background:#20d47b;color:#052617;padding:12px;border:0;border-radius:8px;font-weight:bold}
+input{padding:10px;max-width:95%;margin:8px 0}
+a{color:#20d47b}
+</style>
+</head>
+<body>
+<header>
+<h1>⚽ MTITAA ICON SCORE</h1>
+<p>Football Scores & Betslip Community</p>
+</header>
+<main>
+<div class="card">
+<h2>Karibu!</h2>
+<p>Angalia mechi, shiriki betslip zako na ungana na mashabiki wengine.</p>
+<button onclick="show('home')">Mwanzo</button>
+<button onclick="show('upload')">Pakia Betslip</button>
+<button onclick="show('account')">Akaunti</button>
+</div>
+<section id="home" class="card">
+<h2>⚽ Mechi na Matokeo</h2>
+<p>Matokeo halisi yataunganishwa baada ya kuunganisha chanzo cha data za mpira.</p>
+<p>Premier League • La Liga • Serie A • NBC Premier League</p>
+</section>
+<section id="upload" class="card" hidden>
+<h2>📸 Shiriki Betslip</h2>
+<input id="photo" type="file" accept="image/*">
+<p><input id="caption" placeholder="Maelezo ya betslip"></p>
+<button onclick="share()">Onyesha Betslip</button>
+<div id="preview"></div>
+</section>
+<section id="account" class="card" hidden>
+<h2>👤 Akaunti</h2>
+<p>Usajili halisi utaongezwa baada ya kuunganisha mfumo salama wa akaunti.</p>
+<input placeholder="Barua pepe au namba ya simu">
+</section>
+<section class="card">
+<h2>👥 Betslip za Jamii</h2>
+<div id="community">Betslip ulizochagua kushiriki zitaonekana hapa kwenye kifaa hiki.</div>
+</section>
+<p style="color:#aab8ca;font-size:12px">Prototype ya mwanzo. Matokeo ya moja kwa moja na akaunti halisi bado havijaunganishwa.</p>
+</main>
+<script>
+function show(id){
+document.querySelectorAll('main section').forEach(s=>s.hidden=true);
+document.getElementById(id).hidden=false;
+}
+function share(){
+const f=document.getElementById('photo').files[0];
+if(!f){alert('Tafadhali chagua picha ya betslip kwanza.');return;}
+const r=new FileReader();
+r.onload=function(){
+const box=document.createElement('div');
+box.className='card';
+const img=document.createElement('img');
+img.src=r.result;img.style.width='100%';img.style.borderRadius='8px';
+const p=document.createElement('p');
+p.textContent=document.getElementById('caption').value||'Betslip iliyoshirikishwa';
+box.appendChild(p);box.appendChild(img);
+document.getElementById('community').prepend(box);
+};
+r.readAsDataURL(f);
+}
+</script>
+</body>
+</html>
